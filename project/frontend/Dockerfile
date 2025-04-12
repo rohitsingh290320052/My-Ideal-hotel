@@ -1,5 +1,6 @@
+# ------------------- Stage 1: Build Stage -----------------------------------
 
-FROM node:21
+FROM node:21 AS frontend-builder
 
 WORKDIR /app
 
@@ -9,7 +10,13 @@ COPY . .
 
 RUN npm i
 
-# currently not here: COPY .env.sample .env.local
+# ------------------ Stage 2: Final stage ------------------------------------
+FROM node:21-slim
+
+WORKDIR /app
+
+# copy built assests and dependencies from frontend-builder stage
+COPY --from=frontend-builder /app .
 
 
 EXPOSE 5173
