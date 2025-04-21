@@ -17,6 +17,7 @@ WORKDIR /app
 
 # copy built assests and dependencies from frontend-builder stage
 COPY --from=frontend-builder /app .
+# COPY .env .env
 
 
 EXPOSE 5173
