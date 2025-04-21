@@ -23,6 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 // Import Routes
 const guestRoutes = require('./routes/guests/guest.route');
 const staffRoutes = require('./routes/staff/staff.route');

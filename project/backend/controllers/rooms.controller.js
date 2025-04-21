@@ -1,10 +1,17 @@
 const Room = require('../models/rooms.model'); // Import the Room model
 
+
 // Add a new room
 exports.addrooms = async (req, res) => {
     try {
-        const { photos, size, capacity, price, description, amenities, BedType, status, hotelName } = req.body;
-        const room = new Room({ photos, size, capacity, price, description, amenities, BedType, status, hotelName });
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ message: 'Photos are required' });
+        }
+        const photosarr = req.files.map(file => file.path); // Get the file paths from the uploaded files
+        
+       consolele.log(photosarr);
+        const {  size, capacity, price, description, amenities, BedType, status, hotelName } = req.body;
+        const room = new Room({ photos:photosarr, size, capacity, price, description, amenities, BedType, status, hotelName });
         await room.save();
         res.status(200).json({ message: 'Room added successfully' });
     } catch (error) {
