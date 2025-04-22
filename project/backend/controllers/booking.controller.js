@@ -64,6 +64,7 @@ exports.bookingRoom = async (req, res, io) => {
 exports.getallBookings = async (req, res) => {
     try {
         const bookings = await Booking.find().populate('guestId').populate('roomId');
+        console.log(bookings);
         if (!bookings || bookings.length === 0) {
             return res.status(404).json({ message: 'No bookings found' });
         }
