@@ -5,7 +5,7 @@ exports.registerGuest = async (req, res) => {
     const guest = await guestService.registerGuest({ name, email, phone, password });
 
     if (guest.status) {
-        res.status(200).json({ message: guest.message });
+        res.status(201).json({ message: guest.message, obj: guest.obj });
     } else {
         res.status(400).json({ message: guest.message });
     }

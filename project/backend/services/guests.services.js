@@ -1,4 +1,9 @@
 const Guest = require('../models/guests/guests.model');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+const JWT_SECRET = process.env.JWT_SECRET || 'yourGuestSecretKey';
 
 exports.registerGuest = async (data) => {
     try {
@@ -13,7 +18,13 @@ exports.registerGuest = async (data) => {
         newGuest.password = await newGuest.hashPassword();
         await newGuest.save();
 
-        return { status: true, message: 'Guest registered successfully' };
+        const token = jwt.sign(
+            { id: newGuest._id, phone: newGuest.phone, email: newGuest.email },
+            JWT_SECRET,
+            { expiresIn: '2h' }
+        );
+
+        return { status: true, message: 'Guest registered successfully', obj: newGuest, token };
     } catch (error) {
         console.error("Register Error:", error);
         return { status: false, message: 'Error during registration' };
@@ -32,7 +43,13 @@ exports.loginGuest = async ({ phone, password }) => {
             return { status: false, message: 'Invalid password' };
         }
 
-        return { status: true, message: 'Login successful' };
+        const token = jwt.sign(
+            { id: userdetails._id, phone: userdetails.phone, email: userdetails.email },
+            JWT_SECRET,
+            { expiresIn: '2h' }
+        );
+
+        return { status: true, message: 'Login successful', token };
     } catch (error) {
         console.error("Login Error:", error);
         return { status: false, message: 'Error during login' };
