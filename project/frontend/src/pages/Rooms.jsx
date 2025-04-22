@@ -51,23 +51,6 @@ const Rooms = () => {
           description: "Comfortable room with all basic amenities for a pleasant stay.",
           amenities: ["Free Wi-Fi", "Air Conditioning", "Flat-screen TV"],
         },
-        // {
-        //   id: 5,
-        //   name: "Presidential Suite",
-        //   price: 350,
-        //   capacity: 2,
-        //   image: "/placeholder.svg?height=300&width=400",
-        //   description: "Our most luxurious accommodation with panoramic views and exclusive services.",
-        //   amenities: [
-        //     "Free Wi-Fi",
-        //     "Air Conditioning",
-        //     "Flat-screen TV",
-        //     "Mini Bar",
-        //     "Jacuzzi",
-        //     "Private Balcony",
-        //     "24/7 Butler Service",
-        //   ],
-        // },
         {
           id: 6,
           name: "Trio Room",
@@ -113,26 +96,17 @@ const Rooms = () => {
     <div className="rooms-page">
       <div className="rooms-hero">
         <div className="container">
-          <h1>Our Rooms</h1>
           <p>Discover comfort and luxury in our carefully designed accommodations</p>
+          <Link to="/restaurant" className="btn dinein-btn">
+            Dine-in
+          </Link>
         </div>
       </div>
 
       <div className="container">
-        <div className="rooms-filters">
-          <div className="filter-group">
-            <label htmlFor="price">Price Range:</label>
-            <select id="price" name="price" value={filter.price} onChange={handleFilterChange} className="form-control">
-              <option value="all">All Prices</option>
-              <option value="0-100">Under 1500</option>
-              <option value="100-200">1500 - 2000</option>
-              <option value="200-300">2000 - 3000</option>
-              <option value="300">3000 and above</option>
-            </select>
-          </div>
-
-          <div className="filter-group">
-            <label htmlFor="capacity">Capacity:</label>
+      <div className="rooms-filters">
+        <div className="filter-group">
+          <label htmlFor="capacity">Capacity:</label>
             <select
               id="capacity"
               name="capacity"
@@ -145,8 +119,9 @@ const Rooms = () => {
               <option value="2">2 People</option>
               <option value="4">4 People</option>
             </select>
-          </div>
         </div>
+      </div>
+
 
         {loading ? (
           <div className="loading">Loading rooms...</div>
@@ -184,10 +159,10 @@ const Rooms = () => {
                         )}
                       </div>
                       
-                      {/* DO NOT REMOVE IT. IT IS IMPORTANT!
+                      {/* DO NOT REMOVE IT. IT IS IMPORTANT! */}
                       <Link to={`/rooms/${room.id}`} className="btn">
                         View Details
-                      </Link> */}
+                      </Link>
                     </div>
                   </div>
                 ))
@@ -216,16 +191,29 @@ const Rooms = () => {
           margin-bottom: 40px;
         }
         
-        .rooms-hero h1 {
-          font-size: 2.5rem;
-          margin-bottom: 15px;
-        }
-        
         .rooms-hero p {
-          font-size: 1.1rem;
+          font-size: 1.2rem;
           max-width: 600px;
           margin: 0 auto;
         }
+
+        .dinein-btn {
+          margin-top: 1rem;
+          display: inline-block;
+          padding: 0.5rem 1.5rem;
+          background-color: #ff6347;
+          color: white;
+          border: none;
+          border-radius: 0.5rem;
+          text-decoration: none;
+          font-weight: 600;
+          transition: background-color 0.3s ease;
+        }
+
+.dinein-btn:hover {
+  background-color: #e5533c;
+}
+
         
         .rooms-filters {
           display: flex;

@@ -17,9 +17,9 @@ const Home = () => {
       <Hero />
 
       <section className="section">
-        <div className="container">
+        <div className="container-1">
           <h2 className="section-title">
-            Welcome to Brijwasi Hotel & Restaurant {selectedCity}
+            Welcome to Brijwasi Hotel & Restaurant
           </h2>
           <p className="section-description">
             Experience luxury and comfort at its finest. Our hotel offers the
@@ -33,13 +33,43 @@ const Home = () => {
       <AboutSection />
 
       <style jsx>{`
-        .section-description {
+        .section {
+          background: #FFFFCC;
+          padding: 80px 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           text-align: center;
-          max-width: 800px;
-          margin: 0 auto 30px;
-          font-size: 1.1rem;
         }
-      `}</style>
+        .container-1{
+          max-width: 800px
+        }
+
+        .section-title {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+          font-weight: 700;
+          color: #2c3e50;
+        }
+
+        .section-description {
+          max-width: 800px;
+          font-size: 1.2rem;
+          line-height: 1.6;
+          color: #4a4a4a;
+        }
+
+        @media (max-width: 768px) {
+          .section-title {
+            font-size: 2rem;
+          }
+
+          .section-description {
+            font-size: 1rem;
+          }
+        }
+     `}</style>
+
     </div>
   )
 }

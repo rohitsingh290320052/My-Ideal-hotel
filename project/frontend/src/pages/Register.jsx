@@ -8,9 +8,8 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    number: "",
+    phone: "",
     password: "",
-    confirmPassword: "",
   })
 
   const [errors, setErrors] = useState({})
@@ -24,7 +23,6 @@ const Register = () => {
       ...formData,
       [name]: value,
     })
-
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -36,19 +34,15 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {}
 
-    if (!formData.name) newErrors.name = "Name is required"
-    if (!formData.email) newErrors.email = "Email is required"
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid"
+    if (!formData.name.trim()) newErrors.name = "Name is required"
+    if (!formData.email.trim()) newErrors.email = "Email is required"
+    else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) newErrors.email = "Email is invalid"
 
-    if (!formData.number) newErrors.number = "Phone number is required"
-    else if (!/^\d{10}$/.test(formData.number)) newErrors.number = "Phone number must be 10 digits"
+    if (!formData.phone.trim()) newErrors.phone = "Phone number is required"
+    else if (!/^\d{10}$/.test(formData.phone.trim())) newErrors.phone = "Phone number must be 10 digits"
 
     if (!formData.password) newErrors.password = "Password is required"
     else if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters"
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match"
-    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -58,20 +52,26 @@ const Register = () => {
     e.preventDefault()
     if (validateForm()) {
       setIsLoading(true)
-
       try {
-        const response = await axios.post("http://localhost:3000/guest/register", {
-          name: formData.name,
-          email: formData.email,
-          number: formData.number,
+        const endpoint = userType == "admin" ? "http://localhost:5000/staff/register" : "http://localhost:5000/guest/register"
+        const requestBody = {
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
+          phone: formData.phone.trim(),
           password: formData.password,
           userType,
-        })
+        };
 
+        if (userType === "admin") {
+          requestBody.role = "admin"; // or get this from a dropdown later
+          requestBody.department = "HR"; // or any default value
+        }
+
+        const response = await axios.post(endpoint, requestBody);
         console.log("Registration successful:", response.data)
         navigate("/login")
       } catch (error) {
-        console.error("Error:", error)
+         console.error("Error:", error)
         if (error.response) {
           setErrors({ general: error.response.data.message || "Registration failed" })
         } else {
@@ -82,6 +82,7 @@ const Register = () => {
       }
     }
   }
+  
 
   return (
     <div className="register-page">
@@ -103,7 +104,7 @@ const Register = () => {
                 onClick={() => setUserType("admin")}
                 type="button"
               >
-                Register as Admin
+                Register as Staff
               </button>
             </div>
 
@@ -118,6 +119,7 @@ const Register = () => {
                   placeholder="Enter your full name"
                   value={formData.name}
                   onChange={handleChange}
+                  autoFocus
                 />
                 {errors.name && <p className="error-message">{errors.name}</p>}
               </div>
@@ -137,17 +139,17 @@ const Register = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="number">Phone Number</label>
+                <label htmlFor="phone">Phone Number</label>
                 <input
                   type="tel"
-                  id="number"
-                  name="number"
-                  className={`form-control ${errors.number ? "error" : ""}`}
+                  id="phone"
+                  name="phone"
+                  className={`form-control ${errors.phone ? "error" : ""}`}
                   placeholder="Enter your phone number"
-                  value={formData.number}
+                  value={formData.phone}
                   onChange={handleChange}
                 />
-                {errors.number && <p className="error-message">{errors.number}</p>}
+                {errors.phone && <p className="error-message">{errors.phone}</p>}
               </div>
 
               <div className="form-group">
@@ -163,7 +165,6 @@ const Register = () => {
                 />
                 {errors.password && <p className="error-message">{errors.password}</p>}
               </div>
-
 
               <button type="submit" className="btn btn-full" disabled={isLoading}>
                 {isLoading ? "Creating Account..." : `Register as ${userType === "admin" ? "Admin" : "User"}`}
@@ -181,68 +182,137 @@ const Register = () => {
 
       <style jsx>{`
         .register-page {
-          min-height: calc(100vh - 200px);
+          background: linear-gradient(to right, #f8f9fa, #eef1f5);
+          min-height: 100vh;
           display: flex;
           align-items: center;
-          padding: 60px 0;
+          justify-content: center;
+          padding: 2rem;
+          font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+          width: 100%;
         }
 
         .auth-container {
-          display: flex;
-          justify-content: center;
+          background: #ffffff;
+          border: 1px solid #ddd;
+          border-radius: 12px;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+          padding: 2rem 2.5rem;
+          transition: box-shadow 0.3s ease;
         }
 
-        .auth-card {
-          background-color: var(--white);
-          border-radius: 8px;
-          box-shadow: var(--box-shadow);
-          padding: 40px;
-          width: 100%;
-          max-width: 450px;
+        .auth-container:hover {
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
         }
 
         .auth-card h2 {
-          color: var(--primary-color);
-          margin-bottom: 10px;
+          font-family: 'Georgia', serif;
+          font-size: 1.8rem;
+          margin-bottom: 1rem;
           text-align: center;
+          color: #333;
         }
 
         .user-type-toggle {
           display: flex;
-          margin-bottom: 25px;
-          border-radius: 6px;
-          overflow: hidden;
-          border: 1px solid #e2e8f0;
+          justify-content: center;
+          margin-bottom: 1.5rem;
+          gap: 1rem;
         }
 
         .toggle-btn {
-          flex: 1;
-          padding: 12px;
-          border: none;
-          background-color: #f8f9fa;
-          cursor: pointer;
+          padding: 0.5rem 1rem;
           font-weight: 500;
-          transition: var(--transition);
+          background: #f0f0f0;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background 0.3s ease;
         }
 
         .toggle-btn.active {
-          background-color: var(--primary-color);
-          color: white;
+          background: #2f80ed;
+          color: #fff;
         }
 
-        .btn-full {
+        .form-group {
+          margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+          display: block;
+          font-weight: 600;
+          margin-bottom: 0.4rem;
+          color: #222;
+        }
+
+        .form-control {
           width: 100%;
-          padding: 12px;
+          padding: 0.65rem 0.75rem;
           font-size: 1rem;
-          margin-bottom: 20px;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+          border-color: #2f80ed;
+          outline: none;
+        }
+
+        .form-control.error {
+          border-color: #e74c3c;
         }
 
         .error-message {
-          color: red;
-          font-size: 0.875rem;
-          margin-top: 5px;
+          color: #e74c3c;
+          font-size: 0.85rem;
+          margin-top: 0.3rem;
+        }
+
+        .btn {
+          display: inline-block;
+          width: 100%;
+          padding: 0.75rem;
+          background-color: #2f80ed;
+          color: #fff;
+          font-size: 1rem;
+          font-weight: 600;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+          background-color: #2566c7;
+        }
+
+        .btn:disabled {
+          background-color: #a1c4fd;
+          cursor: not-allowed;
+        }
+
+        .auth-redirect {
+          text-align: center;
+          margin-top: 1rem;
+          font-size: 0.95rem;
+        }
+
+        .auth-redirect a {
+          color: #2f80ed;
+          text-decoration: none;
+          font-weight: 500;
+        }
+
+        .auth-redirect a:hover {
+          text-decoration: underline;
         }
       `}</style>
+
     </div>
   )
 }

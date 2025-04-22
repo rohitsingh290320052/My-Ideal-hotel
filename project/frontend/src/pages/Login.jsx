@@ -4,7 +4,12 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" })
+  const [formData, setFormData] = useState({
+    email: "",
+    phone: "",
+    password: "",
+  })
+  
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [userType, setUserType] = useState("user")
@@ -18,24 +23,74 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {}
-    if (!formData.email) newErrors.email = "Email is required"
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid"
+  
+    if (userType === "admin") {
+      if (!formData.email) newErrors.email = "Email is required"
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid"
+    } else {
+      if (!formData.phone) newErrors.phone = "Phone number is required"
+      else if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = "Phone number must be 10 digits"
+    }
+  
     if (!formData.password) newErrors.password = "Password is required"
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (validateForm()) {
       setIsLoading(true)
-      setTimeout(() => {
+  
+      try {
+        let response
+  
+        if (userType === "admin") {
+          response = await axios.post("http://localhost:5000/staff/login", {
+            email: formData.email.trim().toLowerCase(),
+            password: formData.password,
+          })
+        } else {
+          response = await axios.post("http://localhost:5000/guest/login", {
+            phone: formData.email.trim(), // assuming guest logs in with phone
+            password: formData.password,
+          })
+        }
+  
+        const result = response.data
+  
+        if (result.status) {
+          // Save token in localStorage
+          localStorage.setItem("token", result.token)
+  
+          // Save user type
+          localStorage.setItem("userType", userType)
+  
+          // Redirect based on user type
+          if (userType === "admin") {
+            navigate("/admin/dashboard")
+          } else {
+            navigate("/guest/dashboard")
+          }
+        } else {
+          setErrors({ form: result.message || "Login failed" })
+        }
+      } catch (error) {
+        console.error("Login error:", error)
+        if (error.response) {
+          setErrors({ form: error.response.data.message || "Login failed" })
+        } else {
+          setErrors({ form: "An error occurred. Please try again." })
+        }
+      } finally {
         setIsLoading(false)
-        console.log(`Login successful as ${userType}`, formData)
-        navigate(userType === "admin" ? "/admin-dashboard" : "/")
-      }, 1500)
+      }
     }
   }
+  
+  
+  
 
   return (
     <div className="login-page">
@@ -62,18 +117,36 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className={`form-control ${errors.email ? "error" : ""}`}
-                value={formData.email}
-                onChange={handleChange}
-              />
-              {errors.email && <p className="error-message">{errors.email}</p>}
-            </div>
+            {userType === "admin" ? (
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className={`form-control ${errors.email ? "error" : ""}`}
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                {errors.email && <p className="error-message">{errors.email}</p>}
+              </div>
+            ) : (
+              <div className="form-group">
+                <label htmlFor="phone">Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  className={`form-control ${errors.phone ? "error" : ""}`}
+                  placeholder="Enter your phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+                {errors.phone && <p className="error-message">{errors.phone}</p>}
+              </div>
+            )}
+
 
             <div className="form-group">
               <label htmlFor="password">Password</label>
@@ -82,18 +155,14 @@ const Login = () => {
                 id="password"
                 name="password"
                 className={`form-control ${errors.password ? "error" : ""}`}
+                placeholder="Create a password"
                 value={formData.password}
                 onChange={handleChange}
               />
               {errors.password && <p className="error-message">{errors.password}</p>}
             </div>
 
-            <div className="form-options">
-              <label>
-                <input type="checkbox" /> Remember me
-              </label>
-              <a href="#" className="forgot-password">Forgot password?</a>
-            </div>
+            {errors.form && <p className="error-message" style={{ textAlign: "center" }}>{errors.form}</p>}
 
             <button type="submit" className="btn" disabled={isLoading}>
               {isLoading ? "Logging in..." : `Login as ${userType}`}
@@ -108,111 +177,143 @@ const Login = () => {
 
       <style jsx>{`
         .login-page {
+          min-height: 100vh;
           display: flex;
           justify-content: center;
           align-items: center;
-          min-height: 100vh;
+          background: linear-gradient(to right, #e8eaf6, #f3e5f5);
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .auth-container {
           width: 100%;
-          max-width: 400px;
+          max-width: 500px;
+          padding: 2rem;
         }
 
         .auth-card {
-          background: #fff;
-          padding: 30px;
-          border-radius: 8px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          background-color: #fff;
+          border-radius: 1rem;
+          padding: 2.5rem;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease;
         }
 
-        .auth-card h2 {
+        .auth-card:hover {
+          transform: translateY(-5px);
+        }
+
+        h2 {
           text-align: center;
-          margin-bottom: 10px;
+          margin-bottom: 0.5rem;
+          color: #3f51b5;
         }
 
         .auth-subtitle {
           text-align: center;
-          margin-bottom: 20px;
+          font-size: 0.95rem;
           color: #666;
+          margin-bottom: 2rem;
         }
 
         .user-type-toggle {
           display: flex;
-          margin-bottom: 20px;
+          justify-content: center;
+          margin-bottom: 1.5rem;
+          gap: 0.5rem;
         }
 
         .toggle-btn {
-          flex: 1;
-          padding: 10px;
-          background: #f1f1f1;
-          border: none;
+          padding: 0.5rem 1rem;
+          background: #eee;
+          border: 1px solid #ccc;
+          border-radius: 20px;
+          font-weight: 500;
           cursor: pointer;
+          transition: all 0.3s ease;
         }
 
         .toggle-btn.active {
-          background: #007bff;
-          color: white;
+          background-color: #3f51b5;
+          color: #fff;
+          border-color: #3f51b5;
         }
 
         .form-group {
-          margin-bottom: 15px;
+          margin-bottom: 1.2rem;
         }
 
         label {
           display: block;
-          margin-bottom: 5px;
-          font-weight: 500;
+          font-size: 0.9rem;
+          color: #333;
+          margin-bottom: 0.4rem;
         }
 
         .form-control {
           width: 100%;
-          padding: 10px;
+          padding: 0.6rem 0.8rem;
           border: 1px solid #ccc;
-          border-radius: 5px;
+          border-radius: 6px;
+          font-size: 0.95rem;
+          transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+          border-color: #3f51b5;
+          outline: none;
         }
 
         .form-control.error {
-          border-color: #e53e3e;
+          border-color: #e53935;
         }
 
         .error-message {
-          color: #e53e3e;
           font-size: 0.85rem;
-          margin-top: 5px;
-        }
-
-        .form-options {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-size: 0.9rem;
-          margin-bottom: 20px;
+          color: #e53935;
+          margin-top: 0.3rem;
         }
 
         .btn {
           width: 100%;
-          padding: 12px;
-          background: #007bff;
+          padding: 0.8rem;
+          font-size: 1rem;
+          background-color: #3f51b5;
           color: white;
           border: none;
-          border-radius: 5px;
-          font-weight: 600;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+          background-color: #303f9f;
+        }
+
+        .btn:disabled {
+          background-color: #9fa8da;
+          cursor: not-allowed;
         }
 
         .auth-redirect {
           text-align: center;
-          margin-top: 10px;
+          margin-top: 1.5rem;
+          font-size: 0.9rem;
         }
 
         .auth-redirect a {
-          color: #007bff;
+          color: #3f51b5;
           text-decoration: none;
           font-weight: 500;
         }
+
+        .auth-redirect a:hover {
+          text-decoration: underline;
+        }
       `}</style>
+
     </div>
   )
 }
 
-export default Login
+export default Login;

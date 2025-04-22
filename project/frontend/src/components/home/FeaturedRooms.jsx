@@ -51,7 +51,7 @@ const FeaturedRooms = () => {
 
       <style jsx>{`
         .featured-rooms {
-          background-color: var(--light-bg);
+          background-color: #FFFFCC;
         }
         
         .rooms-grid {

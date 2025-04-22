@@ -147,17 +147,22 @@ const Restaurant = () => {
     <div className="restaurant-page">
       <div className="restaurant-hero">
         <div className="container">
-          <h1>Brijwasi Restaurant</h1>
-          <p>Experience the finest culinary delights in an elegant setting</p>
+          <p>Savor timeless flavors crafted with modern elegance in a refined setting</p>
         </div>
       </div>
 
       <div className="container">
         <div className="restaurant-tabs">
-          <button className={`tab-btn ${activeTab === "info" ? "active" : ""}`} onClick={() => handleTabChange("info")}>
+          <button
+            className={`tab-btn ${activeTab === "info" ? "active" : ""}`}
+            onClick={() => handleTabChange("info")}
+          >
             Restaurant Info
           </button>
-          <button className={`tab-btn ${activeTab === "menu" ? "active" : ""}`} onClick={() => handleTabChange("menu")}>
+          <button
+            className={`tab-btn ${activeTab === "menu" ? "active" : ""}`}
+            onClick={() => handleTabChange("menu")}
+          >
             Menu
           </button>
           <button
@@ -168,67 +173,59 @@ const Restaurant = () => {
           </button>
         </div>
 
+
         <div className="tab-content">
           {activeTab === "info" && (
             <div className="restaurant-info">
-              <div className="info-grid">
-                <div className="info-image">
-                  <img src="brij_res.jpg" alt="Brijwasi Restaurant" />
-                </div>
-
-                <div className="info-details">
-                  <h2>About Our Restaurant</h2>
-                  <p>
-                    Brijwasi Restaurant offers an exquisite dining experience with a blend of traditional and
-                    contemporary cuisine. Our chefs use the finest ingredients to create memorable dishes that cater to
-                    diverse palates.
-                  </p>
-
-                  <div className="info-box">
-                    <h3>Opening Hours</h3>
-                    <ul>
-                      <li>
-                        <span>Monday - Friday:</span> 12:00 PM - 10:00 PM
-                      </li>
-                      <li>
-                        <span>Saturday - Sunday:</span> 11:00 AM - 11:00 PM
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="info-box">
-                    <h3>Location</h3>
-                    <p>Ground Floor, Brijwasi Hotel, FMRF+FCQ, and, Bhuteshwar Rd, near New Bus Stand, near New Railway Station, Adarsh Nagar, Manoharpura, Mathura</p>
-                  </div>
-
-                  <div className="info-box">
-                    <h3>Reservations</h3>
-                    <p>For reservations, please call: +91 9854845925</p>
-                    <p>Or book a table online using our booking form.</p>
-                    <button className="btn btn-secondary" onClick={() => handleTabChange("booking")}>
-                      Book Now
-                    </button>
-                  </div>
-                </div>
+            <div className="info-details">
+              <h2>About Our Restaurant</h2>
+              <p>
+                Step into a world where rich culinary heritage meets modern finesse. Our restaurant offers an immersive dining
+                experience, blending traditional flavors with contemporary presentation. Every dish is crafted using the finest
+                ingredients to satisfy both heart and palate.
+              </p>
+          
+              <div className="info-box">
+                <h3>Opening Hours</h3>
+                <ul>
+                  <li><span>Monday - Friday:</span> 12:00 PM - 10:00 PM</li>
+                  <li><span>Saturday - Sunday:</span> 11:00 AM - 11:00 PM</li>
+                </ul>
               </div>
-
-              <div className="restaurant-features">
-                <div className="feature">
-                  <h3>Fine Dining</h3>
-                  <p>Elegant ambiance with premium table settings</p>
-                </div>
-
-                <div className="feature">
-                  <h3>Expert Chefs</h3>
-                  <p>Internationally trained chefs creating culinary masterpieces</p>
-                </div>
-
-                <div className="feature">
-                  <h3>Live Music</h3>
-                  <p>Enjoy live music on weekends</p>
-                </div>
+          
+              <div className="info-box">
+                <h3>Reservations</h3>
+                <p>To reserve your table, call us at <strong>+91 9854845925</strong> or book online below.</p>
+                <button className="btn btn-book" onClick={() => handleTabChange("booking")}>
+                  Book Now
+                </button>
               </div>
             </div>
+          
+            <div className="restaurant-features">
+              <div className="feature">
+                <h3>Fine Dining</h3>
+                <p>Elegant ambiance with curated table settings and soft lighting</p>
+              </div>
+          
+              <div className="feature">
+                <h3>Expert Chefs</h3>
+                <p>Globally inspired chefs reinterpreting timeless recipes</p>
+              </div>
+          
+              <div className="feature">
+                <h3>Live Music</h3>
+                <p>Traditional instruments meet modern melodies every weekend</p>
+              </div>
+          
+              <div className="feature">
+                <h3>Family Friendly</h3>
+                <p>Warm hospitality with comfort for all ages</p>
+              </div>
+            </div>
+          </div>
+          
+          
           )}
 
           {activeTab === "menu" && (
@@ -420,18 +417,13 @@ const Restaurant = () => {
         }
         
         .restaurant-hero {
-          background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/placeholder.svg?height=400&width=1200');
+          background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('rest.jpg');
           background-size: cover;
           background-position: center;
           color: var(--white);
           padding: 80px 0;
           text-align: center;
           margin-bottom: 40px;
-        }
-        
-        .restaurant-hero h1 {
-          font-size: 2.5rem;
-          margin-bottom: 15px;
         }
         
         .restaurant-hero p {
@@ -442,112 +434,144 @@ const Restaurant = () => {
         
         .restaurant-tabs {
           display: flex;
-          margin-bottom: 30px;
-          border-bottom: 1px solid #e2e8f0;
+          justify-content: center;
+          margin-bottom: 40px;
+          border-bottom: 2px solid #e6ddcf;
+          background: linear-gradient(to right, #fef9f3, #fff);
+          border-radius: 8px 8px 0 0;
+          padding: 10px 0;
         }
-        
+
         .tab-btn {
-          padding: 12px 24px;
+          padding: 14px 28px;
           background: none;
           border: none;
           cursor: pointer;
-          font-size: 1rem;
-          font-weight: 500;
-          color: var(--gray);
-          transition: var(--transition);
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #8b5e3c;
+          transition: all 0.3s ease;
           border-bottom: 3px solid transparent;
+          font-family: 'Georgia', serif;
+          position: relative;
         }
-        
+
         .tab-btn.active {
-          color: var(--primary-color);
-          border-bottom-color: var(--primary-color);
+          color: #a0522d;
+          border-bottom: 3px solid #a0522d;
         }
-        
+
         .tab-btn:hover {
-          color: var(--primary-color);
+          color: #7b3f1d;
         }
-        
+
         .tab-content {
-          background-color: var(--white);
-          border-radius: 8px;
-          box-shadow: var(--box-shadow);
-          padding: 30px;
+          background-color: #fffaf3;
+          border-radius: 0 0 12px 12px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+          padding: 40px 30px;
+          font-family: 'Segoe UI', sans-serif;
         }
+
         
         /* Restaurant Info Tab */
-        .info-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 30px;
-          margin-bottom: 40px;
+        .restaurant-info {
+          background: linear-gradient(to right, #fdf6f0, #fff);
+          padding: 60px 30px;
+          font-family: 'Georgia', serif;
+          border-top: 1px solid #eee;
         }
-        
-        .info-image img {
-          width: 100%;
-          height: auto;
-          border-radius: 8px;
+
+        .info-details {
+          max-width: 100%;
+          margin-bottom: 60px;
         }
-        
+
         .info-details h2 {
-          color: var(--primary-color);
+          color: #8B4513; /* warm brown */
+          font-size: 2rem;
           margin-bottom: 20px;
         }
-        
+
         .info-details p {
-          margin-bottom: 20px;
-          line-height: 1.7;
-        }
-        
-        .info-box {
+          color: #444;
+          line-height: 1.8;
           margin-bottom: 25px;
+          font-size: 1.05rem;
         }
-        
+
+        .info-box {
+          margin-bottom: 30px;
+        }
+
         .info-box h3 {
-          color: var(--primary-color);
-          margin-bottom: 10px;
-          font-size: 1.2rem;
+          color: #8B0000;
+          margin-bottom: 12px;
+          font-size: 1.3rem;
         }
-        
+
         .info-box ul {
+          padding-left: 0;
           list-style: none;
         }
-        
+
         .info-box ul li {
-          margin-bottom: 8px;
+          margin-bottom: 10px;
+          font-size: 1rem;
         }
-        
+
         .info-box ul li span {
-          font-weight: 500;
+          font-weight: 600;
+          color: #333;
         }
-        
+
+        .btn-book {
+          background-color: #a0522d;
+          color: #fff;
+          padding: 10px 24px;
+          border-radius: 30px;
+          border: none;
+          transition: background 0.3s ease;
+          font-family: 'Segoe UI', sans-serif;
+        }
+
+        .btn-book:hover {
+          background-color: #8b4513;
+        }
+
         .restaurant-features {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
+          gap: 30px;
         }
-        
+
         .feature {
           text-align: center;
-          padding: 20px;
-          background-color: #f8f9fa;
-          border-radius: 8px;
+          background-color: #fffaf3;
+          border: 1px solid #f0e6dd;
+          padding: 25px;
+          border-radius: 12px;
+          box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+          transition: transform 0.3s;
         }
-        
-        .feature-icon {
-          font-size: 2rem;
-          margin-bottom: 15px;
+
+        .feature:hover {
+          transform: translateY(-5px);
         }
-        
+
         .feature h3 {
-          color: var(--primary-color);
+          color: #8B4513;
           margin-bottom: 10px;
           font-size: 1.1rem;
         }
-        
+
         .feature p {
-          font-size: 0.9rem;
-          color: var(--gray);
+          color: #666;
+          font-size: 0.95rem;
+          line-height: 1.5;
         }
+
+
         
         /* Menu Tab */
         .restaurant-menu h2 {
