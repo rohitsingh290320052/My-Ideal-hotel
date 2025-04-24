@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Hero from "../components/home/Hero"
-import FeaturedRooms from "../components/home/FeaturedRooms"
-import AboutSection from "../components/home/AboutSection"
+import { useState } from "react";
+import Hero from "../components/home/Hero";
+import FeaturedRooms from "../components/home/FeaturedRooms";
+import AboutSection from "../components/home/AboutSection";
 
-const Home = () => {
-  const [selectedCity, setSelectedCity] = useState("Mathura")
+const HomePage = () => {
+  const [selectedCity, setSelectedCity] = useState("Mathura");
 
   const handleCityChange = (e) => {
-    setSelectedCity(e.target.value)
-  }
+    setSelectedCity(e.target.value);
+  };
 
   return (
     <div className="home-page">
       <Hero />
 
       <section className="section">
-        <div className="container-1">
+        <div className="container">
           <h2 className="section-title">
             Welcome to Brijwasi Hotel & Restaurant
           </h2>
@@ -33,16 +33,22 @@ const Home = () => {
       <AboutSection />
 
       <style jsx>{`
+        .home-page {
+          font-family: Arial, sans-serif;
+        }
+
         .section {
-          background: #FFFFCC;
+          background: #ffffcc;
           padding: 80px 20px;
           display: flex;
           flex-direction: column;
           align-items: center;
           text-align: center;
         }
-        .container-1{
-          max-width: 800px
+
+        .container {
+          max-width: 800px;
+          margin: 0 auto;
         }
 
         .section-title {
@@ -68,10 +74,9 @@ const Home = () => {
             font-size: 1rem;
           }
         }
-     `}</style>
-
+      `}</style>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default HomePage;

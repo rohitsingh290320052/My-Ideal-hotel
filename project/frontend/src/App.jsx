@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
+import Home from "./Pages/HomePage";
 import Rooms from "./Pages/Rooms";
 import RoomDetail from "./Pages/RoomDetail";
 import Restaurant from "./Pages/Restaurant";
@@ -12,6 +12,7 @@ import SearchResults from "./Pages/SearchResults";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import "./index.css";
+
 
 function App() {
   return (
