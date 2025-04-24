@@ -30,6 +30,7 @@ const staffRoutes = require('./routes/staff/staff.route');
 const hotelRoutes = require('./routes/hotels/hotel.route');
 const roomRoutes = require('./routes/rooms.route');
 const bookingRoutes = require('./routes/booking.route');
+const  islogin = require('./middlewares/islogin');
 
 const port = process.env.PORT || 5000;
 
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
 
 app.use('/guest', guestRoutes);
 app.use('/staff', staffRoutes);
+app.use(islogin); 
 app.use('/hotels', hotelRoutes);
 app.use('/room', roomRoutes);
 app.use('/booking', bookingRoutes);
