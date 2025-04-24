@@ -1,0 +1,30 @@
+pipeline{
+    agent any
+    environment{
+        // Not yet
+    }
+    stages{
+        stage("Clone Code from GitHub"){
+            steps{
+                git url: "https://github.com/rohitsingh290320052/My-Ideal-hotel.git", branch: "main"
+            }
+        }
+    stage('Deploy Application') {
+            steps {
+                echo 'Deploying the application using Docker Compose...'
+                sh '''
+                docker-compose down
+                docker-compose pull
+                docker-compose up -d
+                '''
+            }
+        }
+      
+    stage("Deploy using Docker compose"){
+            steps{
+                echo 'Deploying the application using Docker Compose...'
+                sh "docker-compose up -d"
+            }
+        }
+    }
+}
