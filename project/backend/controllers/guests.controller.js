@@ -1,23 +1,23 @@
-const guestservice = require('../services/guests.services');
+const guestService = require('../services/guests.services');
 
-exports.registerGuest=async (req, res) => {
+exports.registerGuest = async (req, res) => {
     const { name, email, phone, password } = req.body;
-    const guest=await guestservice.registerGuest({ name, email, phone, password });
-    if(guest.status){
-        res.status(201).json({ message: guest.message, obj: guest.obj });
-    }
-    else{
-        res.status(400).json({message:guest.message});
-    }
-}
+    const guest = await guestService.registerGuest({ name, email, phone, password });
 
-exports.loginGuest=async (req, res) => {
+    if (guest.status) {
+        res.status(201).json({ message: guest.message, obj: guest.obj });
+    } else {
+        res.status(400).json({ message: guest.message });
+    }
+};
+
+exports.loginGuest = async (req, res) => {
     const { phone, password } = req.body;
-    const guest = await guestservice.loginGuest({ phone, password });
-    if(guest.status){
-        res.status(200).json({message:guest.message});
+    const guest = await guestService.loginGuest({ phone, password });
+
+    if (guest.status) {
+        res.status(200).json({ message: guest.message });
+    } else {
+        res.status(400).json({ message: guest.message });
     }
-    else{
-        res.status(400).json({message:guest.message});
-    }
-}
+};
