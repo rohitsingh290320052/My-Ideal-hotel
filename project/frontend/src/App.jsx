@@ -12,6 +12,7 @@ import SearchResults from "./Pages/SearchResults";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import "./index.css";
+import CreateRoom from "./Pages/CreateRoom";
 
 
 function App() {
@@ -25,6 +26,10 @@ function App() {
             <Route path="/rooms" element={<Rooms />} />
             <Route path="/rooms/:id" element={<RoomDetail />} />
             <Route path="/restaurant" element={<Restaurant />} />
+            <Route path="/CreateRoom" element={<CreateRoom/>} />
+            {/* <Route path="/hotel/:hotelName" element={<HotelDetail />} /> */}
+            {/* <Route path="/rooms/:hotelName" element={<Rooms />} /> */}
+            {/* <Route path="/rooms/:hotelName/:roomId" element={<RoomDetail />} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             {/* <Route path="/booking-payment" element={<BookingPayment />} />

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -47,13 +48,13 @@ const Login = () => {
         let response
   
         if (userType === "admin") {
-          response = await axios.post("http://localhost:5000/staff/login", {
+          response = await axios.post("http://localhost:3000/staff/login", {
             email: formData.email.trim().toLowerCase(),
             password: formData.password,
           })
         } else {
-          response = await axios.post("http://localhost:5000/guest/login", {
-            phone: formData.email.trim(), // assuming guest logs in with phone
+          response = await axios.post("http://localhost:3000/guest/login", {
+            phone: formData.phone.trim(), // assuming guest logs in with phone
             password: formData.password,
           })
         }

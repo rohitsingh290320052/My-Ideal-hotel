@@ -40,16 +40,19 @@ app.get('/', (req, res) => {
 
 app.use('/guest', guestRoutes);
 app.use('/staff', staffRoutes);
-app.use(islogin); 
-app.use('/hotels', hotelRoutes);
-app.use('/room', roomRoutes);
-app.use('/booking', bookingRoutes);
-
 app.post('/pgateway', (req, res) => {
     const { amount } = req.body;
     console.log(amount);
     res.status(201).json({ message: 'Payment successful' });
 });
+
+
+app.use(islogin); 
+app.use('/hotels', hotelRoutes);
+app.use('/room', roomRoutes);
+app.use('/booking', bookingRoutes);
+
+
 
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
