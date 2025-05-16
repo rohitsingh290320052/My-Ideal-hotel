@@ -53,7 +53,7 @@ const Register = () => {
     if (validateForm()) {
       setIsLoading(true)
       try {
-        const endpoint = userType == "admin" ? "http://localhost:5000/staff/register" : "http://localhost:5000/guest/register"
+        const endpoint = userType == "admin" ? "http://localhost:3000/staff/register" : "http://localhost:3000/guest/register"
         const requestBody = {
           name: formData.name.trim(),
           email: formData.email.trim().toLowerCase(),

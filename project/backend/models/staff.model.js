@@ -29,10 +29,7 @@ const staffSchema = new mongoose.Schema({
         enum: ['admin', 'receptionist', 'housekeeping', 'manager'],
         required: true
     },
-    department: {
-        type: String,
-        required: true
-    }
+
 });
 
  staffSchema.methods.hashPassword=async function(){

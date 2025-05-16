@@ -16,7 +16,7 @@ exports.loginGuest = async (req, res) => {
     const guest = await guestService.loginGuest({ phone, password });
 
     if (guest.status) {
-        res.status(200).json({ message: guest.message });
+        res.status(200).json({ message: guest.message, token: guest.token });
     } else {
         res.status(400).json({ message: guest.message });
     }

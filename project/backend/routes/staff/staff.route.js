@@ -4,6 +4,6 @@ const router = express.Router();
 const staffController= require('../../controllers/staff.controller');
 const  islogin = require('../../middlewares/islogin');
 router.post('/register', staffController.registerStaff);
-router.post('/login',islogin, staffController.loginStaff);
+router.post('/login', staffController.loginStaff);
 
 module.exports = router;

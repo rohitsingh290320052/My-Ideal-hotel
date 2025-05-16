@@ -13,7 +13,7 @@ exports.bookingRoom = async (req, res, io) => {
             return res.status(404).json({ message: 'Room not found' });
         }
        console.log(room.status)
-        if (room.status !== 'booked') {
+        if (room.status === 'booked') {
             return res.status(400).json({ message: 'Room is not available for booking' });
         }
 
@@ -21,11 +21,12 @@ exports.bookingRoom = async (req, res, io) => {
         const totalAmount = days * room.price;
 
         // Call payment gateway API
-        const response = await axios.post('http://localhost:5000/pgateway', {
+        const response = await axios.post('http://localhost:3000/pgateway', {
             amount: totalAmount,
         });
-
-        if (response.status === 200) {
+        console.log(response.data);
+        console.log(response.status);
+        if (response.status === 201) {
             // Update room status to 'booked'
             room.status = 'booked';
             await room.save();
