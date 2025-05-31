@@ -86,11 +86,15 @@ exports.loginGuest = async ({ phone, password }) => {
       JWT_SECRET,
       { expiresIn: '2h' }
     );
-
+    const name = userdetails.name;
+    const guestId = userdetails._id;
+    
     return {
       status: true,
       message: 'Login successful',
       token,
+      name,
+      guestId
     };
   } catch (error) {
     console.error("Login Error:", error);
