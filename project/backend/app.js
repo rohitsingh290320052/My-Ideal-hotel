@@ -47,9 +47,10 @@ app.post('/pgateway', (req, res) => {
 });
 
 
-app.use(islogin); 
+
 app.use('/hotels', hotelRoutes);
 app.use('/room', roomRoutes);
+app.use(islogin); 
 app.use('/booking', bookingRoutes);
 
 
