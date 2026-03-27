@@ -44,7 +44,7 @@ Ensure you have the following installed:
 ### 📥 Installation
 #### Clone the Repository
 ```sh
- git clone https://github.com/your-username/brijwasi-booking.git
+ git clone https://github.com/rohitsingh290320052/brijwasi-booking.git
  cd brijwasi-booking
 ```
 
