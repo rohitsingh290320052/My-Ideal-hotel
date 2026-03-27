@@ -1,7 +1,7 @@
-# 🏨 Brijwasi Hotel & Table Booking System
+# 🏨 Hotel & Table Booking System
 
 ## Overview
-Brijwasi is a hotel and table booking web application built using the **MERN stack (MongoDB, Express.js, React.js, Node.js)**. This project is developed by our team, and my role focuses on implementing **DevOps best practices**, ensuring smooth deployment, scalability, and automation.
+It is a hotel and table booking web application built using the **MERN stack (MongoDB, Express.js, React.js, Node.js)**. This project is developed by our team, and my role focuses on implementing **DevOps best practices**, ensuring smooth deployment, scalability, and automation.
 
 ## 🚀 My Contributions
 As part of this project, I have worked on:
